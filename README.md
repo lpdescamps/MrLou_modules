@@ -236,3 +236,13 @@ The module prints errors when processing fails, such as:
    - Invalid certificate/key formats. 
    - Mismatched certificate and private key. 
    - Incorrect passphrase for encrypted keys.
+
+# Ping Sweep
+This script will ping each ip of a given subnet or multiple subnets
+
+import it and run it
+```python
+from MrLou_modules.Ping_Sweep import ping_sweep
+
+ping_sweep
+```
