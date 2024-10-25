@@ -1,7 +1,14 @@
 # cert_utils.py
 
 import os
-from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_pem_public_key
+from cryptography.hazmat.primitives.serialization import (
+    load_pem_private_key,
+    load_pem_public_key,
+    pkcs12,
+    Encoding,
+    PrivateFormat,
+    NoEncryption
+)
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
 from cryptography import x509
@@ -227,3 +234,108 @@ def compare_public_keys(cert_public_key, key_private_key):
     )
 
     return cert_public_key_pem == key_public_key_pem
+
+
+# Load the PKCS#12 file and export the root/intermediate certificates and private key to PEM
+def convert_pkcs12_to_x509_with_root_chain(p12_path, p12_password, cert_out_path, key_out_path, rootchain_out_path):
+    with open(p12_path, 'rb') as p12_file:
+        p12_data = p12_file.read()
+
+    # Parse the PKCS#12 file
+    private_key, main_cert, additional_certs = pkcs12.load_key_and_certificates(
+        p12_data,
+        password=p12_password.encode() if p12_password else None,
+        backend=default_backend()
+    )
+
+    # Save the main certificate
+    with open(cert_out_path, 'wb') as cert_file:
+        cert_file.write(main_cert.public_bytes(Encoding.PEM))
+
+    # Save the private key
+    if private_key:
+        with open(key_out_path, 'wb') as key_file:
+            key_file.write(private_key.private_bytes(
+                encoding=Encoding.PEM,
+                format=PrivateFormat.PKCS8,
+                encryption_algorithm=NoEncryption()
+            ))
+
+    # Save only the root/intermediate certificates in a separate concatenated file
+    with open(rootchain_out_path, 'wb') as rootchain_file:
+        if additional_certs:
+            for cert in additional_certs:
+                rootchain_file.write(cert.public_bytes(Encoding.PEM))
+
+    print(
+        f"Certificates and key saved as:"
+        f"\n- {cert_out_path} (device certificate)"
+        f"\n- {key_out_path} (private key)"
+        f"\n- {rootchain_out_path} (root and intermediate chain)"
+    )
+
+
+# Load the PKCS#12 file and export all certificates and private key to PEM
+def convert_pkcs12_to_x509_with_chain(p12_path, p12_password, cert_out_path, key_out_path, fullchain_out_path):
+    with open(p12_path, 'rb') as p12_file:
+        p12_data = p12_file.read()
+
+    # Parse the PKCS#12 file
+    private_key, main_cert, additional_certs = pkcs12.load_key_and_certificates(
+        p12_data,
+        password=p12_password.encode() if p12_password else None,
+        backend=default_backend()
+    )
+
+    # Save the main certificate
+    with open(cert_out_path, 'wb') as cert_file:
+        cert_file.write(main_cert.public_bytes(Encoding.PEM))
+
+    # Save the private key
+    if private_key:
+        with open(key_out_path, 'wb') as key_file:
+            key_file.write(private_key.private_bytes(
+                encoding=Encoding.PEM,
+                format=PrivateFormat.PKCS8,
+                encryption_algorithm=NoEncryption()
+            ))
+
+    # Save the full certificate chain (main certificate + additional certs) into one concatenated file
+    with open(fullchain_out_path, 'wb') as fullchain_file:
+        # Write the main certificate
+        fullchain_file.write(main_cert.public_bytes(Encoding.PEM))
+
+        # Write any additional certificates (e.g., intermediate and root certificates)
+        if additional_certs:
+            for cert in additional_certs:
+                fullchain_file.write(cert.public_bytes(Encoding.PEM))
+
+    print(
+        f"Certificates and key saved as:"
+        f"\n- {cert_out_path} (certificate)"
+        f"\n- {key_out_path} (private key)"
+        f"\n- {fullchain_out_path} (full chain)"
+    )
+
+
+def extract_cn_from_pfx(pfx_path, pfx_password):
+    with open(pfx_path, 'rb') as pfx_file:
+        pfx_data = pfx_file.read()
+
+    # Load the PKCS#12 file
+    private_key, certificate, additional_certs = pkcs12.load_key_and_certificates(
+        pfx_data,
+        password=pfx_password.encode() if pfx_password else None,
+        backend=default_backend()
+    )
+
+    # Extract the Common Name (CN) from the certificate subject
+    if certificate:
+        for attribute in certificate.subject:
+            if attribute.oid.dotted_string == "2.5.4.3":  # OID for Common Name (CN)
+                cn = attribute.value
+                print(f"Common Name (CN): {cn}")
+                return cn
+    else:
+        print("No certificate found in the provided PFX file.")
+        return None

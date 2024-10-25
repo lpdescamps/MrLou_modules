@@ -231,6 +231,60 @@ cert_path, key_path = find_cert_and_key_files('/path/to/certs')
 print(f"Cert path: {cert_path}, Key path: {key_path}")
 ```
 
+Load the PKCS#12 file and export the root/intermediate certificates and private key to PEM
+```python
+from MrLou_modules.Certificate_Utils.cert_utils import convert_pkcs12_to_x509_with_root_chain
+
+p12_path = r"path/to/your_certificate.p12"
+p12_password = input("type your password: ")
+cert_out_path = r"path/to/output_certificate.pem"
+key_out_path = r"path/to/output_private_key.pem"
+rootchain_out_path = r"path/to/output_root_chain.pem"
+
+
+convert_pkcs12_to_x509_with_root_chain(
+    p12_path=p12_path,
+    p12_password=p12_password,
+    cert_out_path=cert_out_path,
+    key_out_path=key_out_path,
+    rootchain_out_path=rootchain_out_path,
+)
+```
+
+
+Load the PKCS#12 file and export all certificates and private key to PEM
+```python
+from MrLou_modules.Certificate_Utils.cert_utils import convert_pkcs12_to_x509_with_root_chain
+
+p12_path = r"path/to/your_certificate.p12"
+p12_password = input("type your password: ")
+cert_out_path = r"path/to/output_certificate.pem"
+key_out_path = r"path/to/output_private_key.pem"
+rootchain_out_path = r"path/to/output_root_chain.pem"
+
+
+convert_pkcs12_to_x509_with_root_chain(
+    p12_path=p12_path,
+    p12_password=p12_password,
+    cert_out_path=cert_out_path,
+    key_out_path=key_out_path,
+    rootchain_out_path=rootchain_out_path,
+)
+```
+
+Extract the Common Name from a pfx certificate
+```python
+from MrLou_modules.Certificate_Utils.cert_utils import extract_cn_from_pfx
+
+p12_path = r"path/to/your_certificate.p12"
+p12_password = input("type your password: ")
+
+extract_cn_from_pfx(
+    p12_path, 
+    p12_password
+)
+```
+
 ## Error Handling
 The module prints errors when processing fails, such as:
    - Invalid certificate/key formats. 
