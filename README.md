@@ -285,11 +285,24 @@ extract_cn_from_pfx(
 )
 ```
 
-## Error Handling
-The module prints errors when processing fails, such as:
-   - Invalid certificate/key formats. 
-   - Mismatched certificate and private key. 
-   - Incorrect passphrase for encrypted keys.
+Convert cer to pem certificate
+```python
+from MrLou_modules.Certificate_Utils.cert_utils import convert_cer_to_pem
+
+cer_path = r"path/to/your_certificate.cer"
+pem_path = r"path/to/your_certificate.pem"
+convert_cer_to_pem(cer_path, pem_path)
+```
+
+Convert crt to pem certificate
+```python
+from MrLou_modules.Certificate_Utils.cert_utils import convert_crt_to_pem
+
+crt_path = r"path/to/your_certificate.cer"
+pem_path1 = r"path/to/your_certificate.pem"
+convert_crt_to_pem(crt_path, pem_path)
+```
+
 
 # Ping Sweep
 This script will ping each ip of a given subnet or multiple subnets

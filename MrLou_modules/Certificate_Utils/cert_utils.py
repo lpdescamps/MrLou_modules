@@ -15,6 +15,10 @@ from cryptography import x509
 from datetime import datetime, timezone
 
 
+
+
+
+
 def extract_common_name(subject):
     """Extracts the Common Name (CN) from the subject."""
     for attribute in subject:
@@ -339,3 +343,39 @@ def extract_cn_from_pfx(pfx_path, pfx_password):
     else:
         print("No certificate found in the provided PFX file.")
         return None
+
+
+def convert_cer_to_pem(cer_file_path, pem_file_path):
+    # Read the .cer file in binary mode
+    with open(cer_file_path, 'rb') as cer_file:
+        der_data = cer_file.read()
+
+    # Load the DER-encoded certificate
+    certificate = x509.load_der_x509_certificate(der_data)
+
+    # Convert the certificate to PEM format
+    pem_data = certificate.public_bytes(serialization.Encoding.PEM)
+
+    # Save the PEM data to a file
+    with open(pem_file_path, 'wb') as pem_file:
+        pem_file.write(pem_data)
+
+    print(f"Converted {cer_file_path} to {pem_file_path}")
+
+
+def convert_crt_to_pem(crt_file_path, pem_file_path):
+    # Read the .crt file in binary mode
+    with open(crt_file_path, 'rb') as crt_file:
+        der_data = crt_file.read()
+
+    # Load the DER-encoded certificate
+    certificate = x509.load_der_x509_certificate(der_data)
+
+    # Convert the certificate to PEM format
+    pem_data = certificate.public_bytes(serialization.Encoding.PEM)
+
+    # Save the PEM data to a file
+    with open(pem_file_path, 'wb') as pem_file:
+        pem_file.write(pem_data)
+
+    print(f"Converted {crt_file_path} to {pem_file_path}")

@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="MrLou_modules",  # Replace with your own package name
-    version="0.4.1",  # Initial release version
+    version="0.4.2",  # Initial release version
     author="Louis-Philippe Descamps",  # Replace with your name
     author_email="me@lpdne.eu",  # Replace with your email
     description="A package with multiple little scripts that I keep re-using",  # Short description
