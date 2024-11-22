@@ -379,3 +379,48 @@ def convert_crt_to_pem(crt_file_path, pem_file_path):
         pem_file.write(pem_data)
 
     print(f"Converted {crt_file_path} to {pem_file_path}")
+
+
+def extract_and_save_certificates(input_pem_file, output_dir):
+    """
+    Extracts certificates from a PEM file, saves them to individual files,
+    and names the files based on the Common Name (CN) of each certificate.
+
+    :param input_pem_file: Path to the input PEM file containing multiple certificates
+    :param output_dir: Directory where individual certificate files will be saved
+    """
+    # Ensure the output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Read the entire PEM file
+    with open(input_pem_file, "r") as pem_file:
+        pem_data = pem_file.read()
+
+    # Split the file into individual certificates
+    certificates = pem_data.split("-----END CERTIFICATE-----")
+    certificates = [cert.strip() + "\n-----END CERTIFICATE-----" for cert in certificates if
+                    "-----BEGIN CERTIFICATE-----" in cert]
+
+    # Process each certificate
+    for idx, cert_pem in enumerate(certificates):
+        # Load the certificate
+        cert = x509.load_pem_x509_certificate(cert_pem.encode(), default_backend())
+
+        # Extract the Common Name (CN)
+        cn_name = None
+        for attribute in cert.subject:
+            if attribute.oid == x509.NameOID.COMMON_NAME:
+                cn_name = attribute.value
+                break
+
+        # Fallback to index-based naming if CN is unavailable
+        file_name = f"certificate_{idx + 1}.pem" if not cn_name else f"{cn_name.replace(' ', '_').replace('/', '_')}.pem"
+
+        # Write the individual certificate to a file
+        output_file_path = os.path.join(output_dir, file_name)
+        with open(output_file_path, "w") as output_file:
+            output_file.write(cert_pem)
+
+        print(f"Saved: {output_file_path}")
+
+    print(f"Total certificates processed: {len(certificates)}")

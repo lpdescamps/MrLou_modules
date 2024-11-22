@@ -177,9 +177,10 @@ This guide explains how to use the cert_utils.py module, which provides tools fo
 ## Example Usage
 
 Extract Common Name and SAN from a Certificate
+
 ```python
 from cryptography import x509
-from MrLou_modules.Certificate_Utils.cert_utils import extract_common_name, extract_san_extension
+from mrlou_modules.Certificate_Utils.cert_utils import extract_common_name, extract_san_extension
 
 # Load certificate
 with open('certificate.pem', 'rb') as cert_file:
@@ -195,15 +196,17 @@ print(f"Subject Alternative Names: {san_names}")
 ```
 
 Decrypt and Save a Private Key
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import decrypt_and_save_private_key
+from mrlou_modules.Certificate_Utils.cert_utils import decrypt_and_save_private_key
 
 decrypt_and_save_private_key('encrypted_key.pem', b'passphrase', 'decrypted_key.pem')
 ```
 
 Process Certificate or Key
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import process_certificate
+from mrlou_modules.Certificate_Utils.cert_utils import process_certificate
 
 cert_details = process_certificate('certificate.pem')
 print(cert_details)
@@ -217,30 +220,32 @@ print(cert_details)
 ```
 
 Verify Certificate and Private Key Match
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import process_certificate_and_key
+from mrlou_modules.Certificate_Utils.cert_utils import process_certificate_and_key
 
 process_certificate_and_key('certificate.pem', 'private_key.pem')
 ```
 
 Find Certificate and Key Files
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import find_cert_and_key_files
+from mrlou_modules.Certificate_Utils.cert_utils import find_cert_and_key_files
 
 cert_path, key_path = find_cert_and_key_files('/path/to/certs')
 print(f"Cert path: {cert_path}, Key path: {key_path}")
 ```
 
 Load the PKCS#12 file and export the root/intermediate certificates and private key to PEM
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import convert_pkcs12_to_x509_with_root_chain
+from mrlou_modules.Certificate_Utils.cert_utils import convert_pkcs12_to_x509_with_root_chain
 
 p12_path = r"path/to/your_certificate.p12"
 p12_password = input("type your password: ")
 cert_out_path = r"path/to/output_certificate.pem"
 key_out_path = r"path/to/output_private_key.pem"
 rootchain_out_path = r"path/to/output_root_chain.pem"
-
 
 convert_pkcs12_to_x509_with_root_chain(
     p12_path=p12_path,
@@ -253,15 +258,15 @@ convert_pkcs12_to_x509_with_root_chain(
 
 
 Load the PKCS#12 file and export all certificates and private key to PEM
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import convert_pkcs12_to_x509_with_root_chain
+from mrlou_modules.Certificate_Utils.cert_utils import convert_pkcs12_to_x509_with_root_chain
 
 p12_path = r"path/to/your_certificate.p12"
 p12_password = input("type your password: ")
 cert_out_path = r"path/to/output_certificate.pem"
 key_out_path = r"path/to/output_private_key.pem"
 rootchain_out_path = r"path/to/output_root_chain.pem"
-
 
 convert_pkcs12_to_x509_with_root_chain(
     p12_path=p12_path,
@@ -273,21 +278,23 @@ convert_pkcs12_to_x509_with_root_chain(
 ```
 
 Extract the Common Name from a pfx certificate
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import extract_cn_from_pfx
+from mrlou_modules.Certificate_Utils.cert_utils import extract_cn_from_pfx
 
 p12_path = r"path/to/your_certificate.p12"
 p12_password = input("type your password: ")
 
 extract_cn_from_pfx(
-    p12_path, 
+    p12_path,
     p12_password
 )
 ```
 
 Convert cer to pem certificate
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import convert_cer_to_pem
+from mrlou_modules.Certificate_Utils.cert_utils import convert_cer_to_pem
 
 cer_path = r"path/to/your_certificate.cer"
 pem_path = r"path/to/your_certificate.pem"
@@ -295,21 +302,35 @@ convert_cer_to_pem(cer_path, pem_path)
 ```
 
 Convert crt to pem certificate
+
 ```python
-from MrLou_modules.Certificate_Utils.cert_utils import convert_crt_to_pem
+from mrlou_modules.Certificate_Utils.cert_utils import convert_crt_to_pem
 
 crt_path = r"path/to/your_certificate.cer"
-pem_path1 = r"path/to/your_certificate.pem"
+pem_path = r"path/to/your_certificate.pem"
 convert_crt_to_pem(crt_path, pem_path)
 ```
 
+Extract root cert from pem concatenate file to individual pem files
+
+```python
+import mrlou_modules.Certificate_Utils.cert_utils as cu
+
+# Example usage:
+input_pem_file = r'path/to/your_certificate.pem'
+output_dir = r'path/to/certificates'
+
+# Call the function to extract and save certificates
+cu.extract_and_save_certificates(input_pem_file, output_dir)
+```
 
 # Ping Sweep
 This script will ping each ip of a given subnet or multiple subnets
 
 import it and run it
+
 ```python
-from MrLou_modules.Ping_Sweep import ping_sweep
+from mrlou_modules.Ping_Sweep import ping_sweep
 
 ping_sweep
 ```

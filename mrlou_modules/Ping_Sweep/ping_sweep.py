@@ -4,7 +4,7 @@ import ipaddress
 from subprocess import DEVNULL
 from datetime import datetime
 import time
-from MrLou_modules.Random_Message.random_message import get_random_message
+from mrlou_modules.Random_Message.random_message import get_random_message
 
 # ANSI escape codes for red text
 RED = '\033[91m'

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="MrLou_modules",  # Replace with your own package name
+    name="mrlou_modules",  # Replace with your own package name
     version="0.4.2",  # Initial release version
     author="Louis-Philippe Descamps",  # Replace with your name
     author_email="me@lpdne.eu",  # Replace with your email
