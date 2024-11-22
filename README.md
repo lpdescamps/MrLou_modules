@@ -297,7 +297,7 @@ Convert cer to pem certificate
 from mrlou_modules.Certificate_Utils.cert_utils import convert_cer_to_pem
 
 cer_path = r"path/to/your_certificate.cer"
-pem_path = r"path/to/your_certificate.pem"
+pem_path = r"path/to/certificates"
 convert_cer_to_pem(cer_path, pem_path)
 ```
 
@@ -307,7 +307,7 @@ Convert crt to pem certificate
 from mrlou_modules.Certificate_Utils.cert_utils import convert_crt_to_pem
 
 crt_path = r"path/to/your_certificate.cer"
-pem_path = r"path/to/your_certificate.pem"
+pem_path = r"path/to/certificates"
 convert_crt_to_pem(crt_path, pem_path)
 ```
 
