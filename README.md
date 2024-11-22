@@ -1,7 +1,7 @@
 # MrLou Modules
 
 ## Overview
-The `MrLou_modules` is a collection of Python package that I keep re-using and thought would be good to share them
+The `mrlou_modules` is a collection of Python package that I keep re-using and thought would be good to share them
 
 ## Contributing
 If you would like to contribute to this project, please fork the repository and submit a pull request with your changes. Ensure that your code follows the existing style and includes appropriate tests.
@@ -14,14 +14,14 @@ This project is licensed under the MIT License. See the LICENSE file for details
 You can install the package from PyPI using pip:
 
 ```
-pip install MrLou_modules
+pip install mrlou_modules
 ```
 
 # Random_Message
 
 ## Overview
 
-The `Random_Message` in `MrLou_modules` is a Python package that provides a collection of random messages, including fun facts and jokes. 
+The `Random_Message` in `mrlou_modules` is a Python package that provides a collection of random messages, including fun facts and jokes. 
 This package is designed to be easy to use and integrate into your Python projects to add a touch of randomness and fun.
 I'm using it in script that takes a bit long to complete so printing out those messages keep me awake
 
@@ -31,7 +31,7 @@ To use the package in your Python script, follow these steps:
 1. Import the necessary function:
 
 ```
-from MrLou_modules.Random_Message.random_message import get_random_message
+from mrlou_modules.Random_Message.random_message import get_random_message
 ```
 
 2. Get a random message:
@@ -44,10 +44,10 @@ print(message)
 The `get_random_message` function will alternately return a joke or a fun fact each time it is called.
 
 ## Example
-Here’s a simple example of how to use `MrLou_modules`:
+Here’s a simple example of how to use `mrlou_modules`:
 
 ```
-from MrLou_modules.Random_Message.random_message import get_random_message
+from mrlou_modules.Random_Message.random_message import get_random_message
 
 # Print a random message
 print(get_random_message())
@@ -70,7 +70,7 @@ The `variables.py` contain all the configuration values such as URIs, certificat
 the `cyberark_api.py` has one class with a function `get_credentials` that you can use to pull credential stored in Cyberark
 
 ## Example
-Here’s a simple example of how to use `MrLou_modules`:
+Here’s a simple example of how to use `mrlou_modules`:
 
 create a variables.py with your variables by adjusting the <>:
 
@@ -99,7 +99,7 @@ client_key = r'C:\path\to\_unencrypted_key.pem'
 The main script is 
 ```
 import variables
-from MrLou_modules.Cyberark.cyberark_api import CyberArkAPI
+from mrlou_modules.Cyberark.cyberark_api import CyberArkAPI
 
 cyberark_api = CyberArkAPI(variables)
 credentials = cyberark_api.get_credentials()
