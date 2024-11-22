@@ -345,13 +345,44 @@ def extract_cn_from_pfx(pfx_path, pfx_password):
         return None
 
 
-def convert_cer_to_pem(cer_file_path, pem_file_path):
+# def convert_cer_to_pem(cer_file_path, pem_file_path):
+#     # Read the .cer file in binary mode
+#     with open(cer_file_path, 'rb') as cer_file:
+#         der_data = cer_file.read()
+#
+#     # Load the DER-encoded certificate
+#     certificate = x509.load_der_x509_certificate(der_data)
+#
+#     # Convert the certificate to PEM format
+#     pem_data = certificate.public_bytes(serialization.Encoding.PEM)
+#
+#     # Save the PEM data to a file
+#     with open(pem_file_path, 'wb') as pem_file:
+#         pem_file.write(pem_data)
+#
+#     print(f"Converted {cer_file_path} to {pem_file_path}")
+
+def convert_cer_to_pem(cer_file_path, output_folder):
     # Read the .cer file in binary mode
     with open(cer_file_path, 'rb') as cer_file:
         der_data = cer_file.read()
 
     # Load the DER-encoded certificate
     certificate = x509.load_der_x509_certificate(der_data)
+
+    # Get the CN from the certificate subject
+    cn = None
+    for attribute in certificate.subject:
+        if attribute.oid == x509.NameOID.COMMON_NAME:
+            cn = attribute.value
+            break
+
+    # If no CN found, set a default name
+    if not cn:
+        cn = 'unknown_certificate'
+
+    # Generate the output PEM file path based on CN
+    pem_file_path = os.path.join(output_folder, f"{cn}.pem")
 
     # Convert the certificate to PEM format
     pem_data = certificate.public_bytes(serialization.Encoding.PEM)
@@ -363,13 +394,45 @@ def convert_cer_to_pem(cer_file_path, pem_file_path):
     print(f"Converted {cer_file_path} to {pem_file_path}")
 
 
-def convert_crt_to_pem(crt_file_path, pem_file_path):
+
+# def convert_crt_to_pem(crt_file_path, pem_file_path):
+#     # Read the .crt file in binary mode
+#     with open(crt_file_path, 'rb') as crt_file:
+#         der_data = crt_file.read()
+#
+#     # Load the DER-encoded certificate
+#     certificate = x509.load_der_x509_certificate(der_data)
+#
+#     # Convert the certificate to PEM format
+#     pem_data = certificate.public_bytes(serialization.Encoding.PEM)
+#
+#     # Save the PEM data to a file
+#     with open(pem_file_path, 'wb') as pem_file:
+#         pem_file.write(pem_data)
+#
+#     print(f"Converted {crt_file_path} to {pem_file_path}")
+
+def convert_crt_to_pem(crt_file_path, output_folder):
     # Read the .crt file in binary mode
     with open(crt_file_path, 'rb') as crt_file:
         der_data = crt_file.read()
 
     # Load the DER-encoded certificate
     certificate = x509.load_der_x509_certificate(der_data)
+
+    # Get the CN from the certificate subject
+    cn = None
+    for attribute in certificate.subject:
+        if attribute.oid == x509.NameOID.COMMON_NAME:
+            cn = attribute.value
+            break
+
+    # If no CN found, set a default name
+    if not cn:
+        cn = 'unknown_certificate'
+
+    # Generate the output PEM file path based on CN
+    pem_file_path = os.path.join(output_folder, f"{cn}.pem")
 
     # Convert the certificate to PEM format
     pem_data = certificate.public_bytes(serialization.Encoding.PEM)
